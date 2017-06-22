@@ -5,7 +5,7 @@ import java.net.InetAddress
 
 import io.buoyant.namer.{NameTreeTransformer, TransformerConfig, TransformerInitializer}
 import io.buoyant.transformer.{Netmask, SubnetLocalTransformer}
-import com.twitter.finagle.{Http, Path, Service, http}
+import com.twitter.finagle._
 import com.twitter.logging.Logger
 import com.twitter.util.Await
 
@@ -26,7 +26,7 @@ class Ec2HostTransformerConfig() extends TransformerConfig {
   val defaultPrefix = Path.read("/io.l5d.ec2host")
 
   @JsonIgnore
-  override def mk(): NameTreeTransformer = {
+  override def mk(params: Stack.Params): NameTreeTransformer = {
     new SubnetLocalTransformer(prefix, Seq(InetAddress.getByName(localIpAddress)), Netmask("255.255.255.255"))
   }
 
